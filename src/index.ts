@@ -5,11 +5,12 @@ export class LitCirclePercent extends LitElement{
     static styles = css`
     :host{
         display: block;
-    }
-    .circle{
-        stroke-width: 48;
+        height: var(--percent-size, 14px);
+        width: var(--percent-size, 14px);
     }
     canvas{
+        width: 100%;
+        height: 100%;
         display: block;
     }
     `;    
@@ -27,9 +28,8 @@ export class LitCirclePercent extends LitElement{
         this.renderCircle();
     }
 
-    @property({type: Number, attribute: true}) ratio: number = 3;
-    @property({type: Number, attribute: true}) width: number = 14;
-    @property({type: Number, attribute: true}) height: number = 14;
+    @property({type: Number, attribute: true}) ratio: number = 2;
+    @property({type: Number, attribute: true}) size: number = 14;
     @query('canvas') canvas!: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D | null = null;
     setAttribute(name: string, value: string){
@@ -38,20 +38,14 @@ export class LitCirclePercent extends LitElement{
             this.renderCircle();
         }
     }
-    async connectedCallback(){
-        super.connectedCallback();
-        await this.updateComplete
+    firstUpdate(){
         this.init();
         this.renderCircle();
     }
-    disconnectedCallback(){
-        this.ctx = null;
-        super.disconnectedCallback();
-    }
     init(){
         this.ctx = this.canvas.getContext('2d')!;
-        this.ctx.canvas.height = this.height * this.ratio;
-        this.ctx.canvas.width = this.width * this.ratio;
+        this.ctx.canvas.height = this.size * this.ratio;
+        this.ctx.canvas.width = this.size * this.ratio;
         this.ctx.translate(this.radius, this.radius);
         this.ctx.lineWidth = this.lineWidth;
     }
@@ -59,7 +53,7 @@ export class LitCirclePercent extends LitElement{
         return 1 * this.ratio;
     }
     get radius(){
-        return this.width * this.ratio / 2;
+        return this.size * this.ratio / 2 ;
     }
     getColor(): string{
         const styles = window.getComputedStyle(this.canvas);
@@ -77,7 +71,7 @@ export class LitCirclePercent extends LitElement{
         this.ctx.moveTo(0, 0);
         this.ctx.lineTo(0, -this.radius);
         this.ctx.arc(0, 0,
-            this.radius - this.lineWidth - 1, 
+            this.radius - this.lineWidth - this.ratio, 
             -Math.PI / 2,
             (this.percent / 100) * 2 * Math.PI - Math.PI / 2
         );
@@ -89,7 +83,7 @@ export class LitCirclePercent extends LitElement{
         this.ctx.stroke();
     }
     render(){
-        return html`<canvas style = "width: ${this.width}px; height: ${this.height}px;"></canvas>`;
+        return html`<canvas></canvas>`;
     }
 }
 
