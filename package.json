@@ -1,6 +1,6 @@
 {
   "name": "lit-circle-percent",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Circle progress icon",
   "main": "dist/index.js",
   "module": "dist/index.js",

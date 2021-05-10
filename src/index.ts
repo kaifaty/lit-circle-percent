@@ -38,7 +38,7 @@ export class LitCirclePercent extends LitElement{
             this.renderCircle();
         }
     }
-    firstUpdate(){
+    firstUpdated(){
         this.init();
         this.renderCircle();
     }
